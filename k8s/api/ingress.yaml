@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dominio-ingress-api
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /swagger
+  #  nginx.ingress.kubernetes.io/configuration-snippet: |
+  #    rewrite /swagger http://zan-20.uffs.edu.br;
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: zan-20.uffs.edu.br
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-ingress-api
+  annotations:
+    #nginx.ingress.kubernetes.io/rewrite-target: /
+
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite /swagger http://zan-20.uffs.edu.br;
+spec:
+  ingressClassName: nginx
+  rules:
+    #- host: zan-20.uffs.edu.br
+    - http:
+        paths:
+        - pathType: Prefix
+          path: "/swagger"
+          backend:
+            service:
+              name: api-service
+              port:
+                number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: padrao-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: nginx
+      port:
+        number: 80
