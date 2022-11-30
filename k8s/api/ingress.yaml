@@ -4,12 +4,10 @@ metadata:
   name: dominio-ingress-api
   annotations:
     nginx.ingress.kubernetes.io/app-root: /swagger
-  #  nginx.ingress.kubernetes.io/configuration-snippet: |
-  #    rewrite /swagger http://zan-20.uffs.edu.br;
 spec:
   ingressClassName: nginx
   rules:
-    - host: zan-20.uffs.edu.br
+    - host: nome_dominio
       http:
         paths:
           - pathType: Prefix
@@ -25,14 +23,11 @@ kind: Ingress
 metadata:
   name: path-ingress-api
   annotations:
-    #nginx.ingress.kubernetes.io/rewrite-target: /
-
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite /swagger http://zan-20.uffs.edu.br;
+      rewrite /swagger http://nome_dominio;
 spec:
   ingressClassName: nginx
-  rules:
-    #- host: zan-20.uffs.edu.br
+  rules:    
     - http:
         paths:
         - pathType: Prefix
